@@ -21,18 +21,24 @@ export  function Dashboard() {
   }
   return (
     <ScrollView>
+        <View style={{  
+       flexDirection: 'row',
+        alignItems: 'center' 
+    }}>
+      <Text style={{fontWeight: '700', marginTop: 50, marginLeft: 30, fontSize: 50}}>Dashboard</Text>
         <TouchableOpacity style={{
           backgroundColor : '#252525',
           width: 50,
           height: 50,
           borderRadius: 20,
           padding:10,
-          position: 'relative',
-          left: 320,
-          marginTop: 10
+          marginTop: 10,
+          marginLeft: 80
         }}  onPress={handleLogout}>
             <Icon style={{ color: 'white', fontSize: 30}}  name='logout'/>
         </TouchableOpacity>
+        </View>
+
 
         
         <DashboardSales/>

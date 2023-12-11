@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View , Text} from 'react-native'
 import { styles } from './DashboardSalesCard';
 import { getDashboardExchangesCardRequest } from '../../api/Dashboard';
+import Icon from 'react-native-vector-icons/Fontisto';
 
 export  function DashboardExchnagesCard() {
   const [totalExchanges, setTotalExchanges] = useState(0);
@@ -35,8 +36,11 @@ export  function DashboardExchnagesCard() {
       borderRadius: 10,
       marginBottom: 10
     }}>
+      <View style={styles.container}>
+        <Text style={styles.value}>{totalExchanges}</Text> 
+        <Icon style={styles.icon} name='arrow-swap'/>
+      </View>
         <Text style={styles.text}>Intercambios del mes</Text>
-        <Text styles={styles.value}>{totalExchanges}</Text>
     </View>
   )
 }

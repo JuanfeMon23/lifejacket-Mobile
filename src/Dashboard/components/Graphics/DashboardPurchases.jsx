@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {  View, Text, StyleSheet, Dimensions } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
-import RNPickerSelect from 'react-native-picker-select';
 import { getDashboardPurchasesRequest } from '../../api/Dashboard';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 export  function DashboardPurchases() {
     const [data, setData] = useState([]);
@@ -25,14 +25,14 @@ export  function DashboardPurchases() {
     }, []);
     
     const prepareChartData = () => {
-       const filteredData = data.filter(item => item.year === selectedYear);
-       const monthlySales = months.map(month => {
-           const salesData = filteredData.find(item => monthNames[item.month] === month);
-           return salesData ? salesData.totalAmount : 0;
-       });
-    
-       return monthlySales;
-    };
+      const filteredData = data.filter(item => item.year === selectedYear);
+      const monthlySales = months.map(month => {
+        const salesData = filteredData.find(item => monthNames[item.month] === month);
+        return salesData ? parseFloat(salesData.totalAmount.replace('M', '')) : 0;
+      });
+     
+      return monthlySales;
+     };
 
     const chartConfig = {
         backgroundColor: '#ffffff',
@@ -52,31 +52,28 @@ export  function DashboardPurchases() {
 
   return (
     <View style={styles.container} >
-        <RNPickerSelect
-          onValueChange={(value) => handleYearChange(value)}
-          items={years.map((year) => ({ label: year, value: year }))}
-          placeholder={{
-            label: "Seleccionar año",
-            value: null,
-          }}
-          style={{
-            inputAndroid: {
-              fontSize: 16,
-              paddingHorizontal: 10,
-              paddingVertical: 8,
-              borderWidth: 0.5,
-              borderColor: 'purple',
-              borderRadius: 8,
-              color: 'black',
-              paddingRight: 30, 
-          }}}
-        />
-      <Text style={{
-        fontWeight : 'bold',
-        color : '#252525',
-        fontSize: 20
-      }}>Dinero invertido en compras</Text>
-
+      <View style={{  
+       flexDirection: 'row',
+        alignItems: 'center' 
+    }}>
+        <Text style={{
+          fontWeight : 'bold',
+          color : '#252525',
+          fontSize: 20,
+          marginRight: 3
+        }}>Dinero invertido en compras</Text>
+            <SelectList
+              setSelected={(val) => setSelectedYear(val)}
+              data={years.map((year) => ({ key: year, value: year }))}
+              save="value"
+              boxStyles={{height: 50, width:150, marginBottom: 5, zIndex: 1000, elevation: 1000}}
+              inputStyles={{color: 'black', fontSize: 20}}
+              dropdownStyles={{backgroundColor: 'white'}}
+              dropdownItemStyles={{height: 40}}
+              dropdownTextStyles={{color: 'black'}}
+              placeholder="Seleccionar año"
+            />
+      </View>
       <LineChart
         verticalLabelRotation={90}
         data={{

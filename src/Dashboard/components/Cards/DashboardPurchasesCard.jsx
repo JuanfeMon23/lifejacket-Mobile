@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View , Text} from 'react-native'
 import { styles } from './DashboardSalesCard'
 import { getDashboardPurchasesCardRequest } from '../../api/Dashboard'
+import Icon from 'react-native-vector-icons/Feather';
 
 export  function DashboardPurchasesCard() {
   const [totalAmount, setTotalAmount] = useState(0);
@@ -44,8 +45,11 @@ export  function DashboardPurchasesCard() {
       borderRadius: 10,
       marginBottom: 10
     }}>
+      <View style={styles.container}>
+        <Text style={styles.value}>{totalAmount}</Text>
+        <Icon style={styles.icon} name='shopping-cart'/>
+      </View>
         <Text style={styles.text}>Compras del mes</Text>
-        <Text styles={styles.value}>{totalAmount}</Text>
     </View>
   )
 }

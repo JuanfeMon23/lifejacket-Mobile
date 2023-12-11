@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {  View, Text, StyleSheet, Dimensions } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
-import RNPickerSelect from 'react-native-picker-select';
 import { getDashboardImprovementsRequest } from '../../api/Dashboard';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { SelectList } from 'react-native-dropdown-select-list';
+
 
 export  function DashboardImprovements() {
     const [data, setData] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [years, setYears] = useState([]);
-  
+    const [selectedValue, setSelectedValue] = useState(null);
     const months = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -26,14 +26,14 @@ export  function DashboardImprovements() {
   }, []);
   
   const prepareChartData = () => {
-     const filteredData = data.filter(item => item.year === selectedYear);
-     const monthlySales = months.map(month => {
-         const salesData = filteredData.find(item => monthNames[item.month] === month);
-         return salesData ? salesData.totalAmount : 0;
-     });
-  
-     return monthlySales;
-  };
+    const filteredData = data.filter(item => item.year === selectedYear);
+    const monthlyImprovements = months.map(month => {
+        const improvementsData = filteredData.find(item => monthNames[item.month] === month);
+        return improvementsData ? parseFloat(improvementsData.totalAmount.replace('M', '')) : 0;
+    });
+
+    return monthlyImprovements;
+};
 
   const chartConfig = {
     backgroundColor: '#ffffff',
@@ -52,25 +52,29 @@ export  function DashboardImprovements() {
       
   return (
     <View style={styles.container} >
+      <View style={{  
+       flexDirection: 'row',
+        alignItems: 'center' 
+    }}>
       <Text style={{
         fontWeight : 'bold',
         color : '#252525',
-        fontSize: 20
+        fontSize: 20,
+        marginRight: 3
       }}>Dinero invertido en mejoras</Text>
-        <RNPickerSelect
-          onValueChange={(value) => handleYearChange(value)}
-          items={years.map((year) => ({ label: year.toString(), value: year }))}
-          placeholder={{
-            label: "Seleccionar año",
-            value: null,
-          }}
-          style={{
-            borderColor: 'gray',
-            borderRadius: 4,
-            color: 'black',
-            fontSize: 20
-          }}
-        />
+          <SelectList
+            setSelected={(val) => setSelectedYear(val)}
+            data={years.map((year) => ({ key: year, value: year }))}
+            save="value"
+            boxStyles={{height: 50, width:150, marginBottom: 5, zIndex: 1000, elevation: 1000}}
+            inputStyles={{color: 'black', fontSize: 20}}
+            dropdownStyles={{backgroundColor: 'white'}}
+            dropdownItemStyles={{height: 40}}
+            dropdownTextStyles={{color: 'black'}}
+            placeholder="Seleccionar año"
+          />
+      </View>
+
       <LineChart
         verticalLabelRotation={90}
         data={{

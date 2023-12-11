@@ -1,12 +1,12 @@
 import axios from '../../api/axios';
 
-export const getDashboardSalesRequest = async () => await axios.get(`/Dashboard/Sales/withMonth`);
+export const getDashboardSalesRequest = async () => await axios.get(`/Dashboard-mobile/Sales`);
 
-export const getDashboardPurchasesRequest = () => axios.get(`/Dashboard/Purchases/withMonth`);
+export const getDashboardPurchasesRequest = () => axios.get(`/Dashboard-mobile/Purchases`);
 
-export const getDashboardExchangesRequest = () => axios.get(`/Dashboard/Exchanges/withMonth`);
+export const getDashboardExchangesRequest = () => axios.get(`/Dashboard-mobile/Exchanges`);
 
-export const getDashboardImprovementsRequest = () => axios.get(`/Dashboard/Improvements/withMonth`);
+export const getDashboardImprovementsRequest = () => axios.get(`/Dashboard-mobile/Improvements`);
 
 export const getDashboardVehiclesRequest = () => axios.get(`/Dashboard/Vehicles/totalVehicles`);
 

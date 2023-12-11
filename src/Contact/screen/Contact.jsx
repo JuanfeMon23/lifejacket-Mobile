@@ -7,13 +7,17 @@ import { Linking } from 'react-native';
 export  function Contact() {
   return (
     <View style={styles.container}>
+      <Text style={{fontWeight: '700', marginTop: 50, marginLeft: 30, fontSize: 50}}>Contacto</Text>
       <View style={{
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: 20
       }}>
-        <Text style={styles.firstText}>Somos una compraventa de vehículos ubicada en Laureles, Medellín.</Text>
-        <View>
+        <View style={{width: 300}}>
+          <Text style={styles.firstText}>Somos una compraventa de vehículos ubicada en Laureles, Medellín.</Text>
+        </View>
+        
+        <View style={{width : 320, borderRadius: 30}}>
           <Text style={styles.secondText}>Para mas información acerca de nuestros vehículos, selecciona uno de nuestros iconos de contacto.</Text>
         </View>
       </View>
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
   },
   firstText : {
-
+    fontSize: 20
   },
   secondText : {
     marginTop: 10,

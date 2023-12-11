@@ -12,15 +12,9 @@ export  function Login() {
     const {login, isAutenticated} = useAuth();
     const navigation = useNavigation();
 
-
-    useEffect(()=> {
-      if(isAutenticated) return navigation.navigate('Authenticated', { screen: 'Dashboard' });
-    }, []);
-
-
     const onSubmit = (data) => {
         login(data)
-        navigation.navigate('Main', { screen: 'Dashboard' })
+        navigation.navigate('Authenticated', { screen: 'Dashboard' })
     }
 
   return (
@@ -68,16 +62,22 @@ export  function Login() {
       />
       {errors.userPassword && <Text style={{ color: 'red' }}>Campo requerido</Text>}
 
+      <TouchableOpacity style={{marginTop : 10, justifyContent: 'flex-end', alignSelf: 'flex-end', marginRight:35}} onPress={() => navigation.navigate('PasswordRecovery', { screen: 'Send' })}>
+          <Text style={{fontWeight: 'bold', color: '#1e40af'}}>¿Olvidaste tu contraseña?</Text>
+        </TouchableOpacity>
       
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
             <Text style={styles.textButton}>Ingresar</Text>
         </TouchableOpacity>
+
+
+
     </View>
 </View>
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     global : {
         backgroundColor : '#f1f1f1',
         flex : 1
@@ -107,20 +107,22 @@ const styles = StyleSheet.create({
         backgroundColor : '#fff'
     },
     button : {
-        width: '40%',
-        height: '15%',
-        marginTop: 20,
-        borderRadius: 20,
-        borderWidth: 1,
-        backgroundColor: '#1e40af',
-        borderColor: '#1e40af',
-        padding: 15,
+      width: 150,
+      height: 40,
+      marginTop: 20,
+      borderRadius: 20,
+      borderWidth: 1,
+      backgroundColor: '#1e40af',
+      borderColor: '#1e40af',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     textButton : {
-        alignItems: 'center',
-        color: 'white',
-        fontWeight : 'bold',
-        fontSize: 20,
+      alignItems: 'center',
+      color: 'white',
+      fontWeight : 'bold',
+      fontSize: 17,
+      textAlign: 'center'
     },
     icon : {
         color: 'white',

@@ -1,38 +1,43 @@
 import React, {useState, useEffect} from 'react'
 import {  View, Text, StyleSheet, Dimensions } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
-import RNPickerSelect from 'react-native-picker-select';
 import { getDashboardExchangesRequest } from '../../api/Dashboard';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 export  function DashboardExchanges() {
-    const [data, setData] = useState([]);
-    const [filterByStatus, setFilterByStatus] = useState("");
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [years, setYears] = useState([]);
-    const months = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
+  const [filterByStatus, setFilterByStatus] = useState("");
+  const [data, setData] = useState({ trueExchanges: [], falseExchanges: [] });
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [years, setYears] = useState([]);
+  const [selected, setSelected] = React.useState("");
+  const months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 
-    useEffect(() => {
-        const fetchSales = async () => {
-            const result = await getDashboardExchangesRequest();
-            setData(result.data);
-            const uniqueYears = [...new Set(result.data.map(item => item.year))];
-            setYears(uniqueYears);
-        }
-        fetchSales();
-    }, []);
-    
-    const prepareChartData = () => {
-        const filteredData = data.filter(item => item.year === selectedYear && item.exchangeCashPriceStatus.toString() === filterByStatus);
-        const monthlyExchanges = months.map(month => {
-            const exchangesData = filteredData.find(item => monthNames[item.month] === month);
-            return exchangesData ? exchangesData.totalAmount : 0;
-        });
-
-        return monthlyExchanges;
+  useEffect(() => {
+    const fetchExchanges = async () => {
+      try {
+        const result = await getDashboardExchangesRequest();
+        setData(result.data);
+        const uniqueYears = [...new Set(result.data.trueExchanges.concat(result.data.falseExchanges).map(item => item.year))];
+        setYears(uniqueYears);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
+    fetchExchanges();
+  }, []);
+
+  const prepareChartData = () => {
+    const filteredData = filterByStatus ? data[`${filterByStatus}Exchanges`] : [];
+    const monthlyExchanges = months.map(month => {
+      const exchangesData = filteredData.find(item => monthNames[item.month] === month);
+      return exchangesData ? parseFloat(String(exchangesData.totalAmount).replace('M', '')) : 0;
+    });
+
+    return monthlyExchanges;
+  };
 
     const chartConfig = {
         backgroundColor: '#ffffff',
@@ -54,6 +59,11 @@ export  function DashboardExchanges() {
             setFilterByStatus(value);
         };
 
+        const statusOptions = [
+          { key: "Entrante", value: true },
+          { key: "Saliente", value: false },
+         ];
+         
   return (
     <View style={styles.container} >
       <Text style={{
@@ -61,30 +71,32 @@ export  function DashboardExchanges() {
         color : '#252525',
         fontSize: 20
       }}>Dinero  en intercambios</Text>
-            <RNPickerSelect
-            onValueChange={(filterByStatus) => setFilterByStatus(filterByStatus)}
-            placeholder={{
-                label: "Estado",
-                value: null,
-            }}
-            items={[
-                { label: "Entrante", value: "entrante" },
-                { label: "Saliente", value: "saliente" },
-            ]}
-            textInputProps={{
-                style: {
-                  color: 'black',
-                },
-              }}
+        <View style={{        flexDirection: 'row',
+        alignItems: 'center'}}>
+          <SelectList
+                setSelected={(val) => handleStatusChange(val)}
+                data={statusOptions.map((status) => ({key : status.key, value : status.value}))}
+                save="value"
+                boxStyles={{height: 50, width:150, marginBottom: 5, zIndex: 1000, elevation: 1000, marginRight: 10}}
+                inputStyles={{ fontSize: 20}}
+                dropdownStyles={{backgroundColor: 'white'}}
+                dropdownItemStyles={{height: 40}}
+                dropdownTextStyles={{color: 'black'}}
+                placeholder="Estado"
+                />
+            <SelectList
+              setSelected={(val) => setSelectedYear(val)}
+              data={years.map((year) => ({ key: year, value: year }))}
+              save="value"
+              boxStyles={{height: 50, width:150, marginBottom: 5, zIndex: 1000, elevation: 1000}}
+              inputStyles={{ fontSize: 20}}
+              dropdownStyles={{backgroundColor: 'white'}}
+              dropdownItemStyles={{height: 40}}
+              dropdownTextStyles={{color: 'black'}}
+              placeholder="Seleccionar año"
             />
-        <RNPickerSelect
-          onValueChange={(value) => handleYearChange(value)}
-          items={years.map((year) => ({ label: year.toString(), value: year }))}
-          placeholder={{
-            label: "Seleccionar año",
-            value: null,
-          }}
-        />
+        </View>
+
       <LineChart
         verticalLabelRotation={90}
         data={{

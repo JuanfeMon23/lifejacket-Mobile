@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View , Text} from 'react-native'
 import { getDashboardVehiclesRequest } from '../../api/Dashboard'
 import { styles } from './DashboardSalesCard';
+import IconCar from 'react-native-vector-icons/FontAwesome5';
 
 export  function DashboardVehiclesCard() {
   const [totalVehicles, setTotalVehicles] = useState(0);
@@ -29,8 +30,11 @@ export  function DashboardVehiclesCard() {
       borderRadius: 10,
       marginBottom: 10
     }}>
+      <View style={styles.container} >  
+        <Text style={styles.value}>{totalVehicles}</Text>
+        <IconCar style={styles.icon} name='car'/>
+      </View>
         <Text style={styles.text}>Vehiculos activos</Text>
-        <Text styles={styles.value}>{totalVehicles}</Text>
     </View>
   )
 }
