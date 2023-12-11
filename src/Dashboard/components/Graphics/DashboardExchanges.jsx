@@ -81,7 +81,7 @@ export  function DashboardExchanges() {
                 inputStyles={{ fontSize: 20}}
                 dropdownStyles={{backgroundColor: 'white'}}
                 dropdownItemStyles={{height: 40}}
-                dropdownTextStyles={{color: 'black'}}
+                dropdownTextStyles={{color: 'black', backgroundColor: '#1e40af'}}
                 placeholder="Estado"
                 />
             <SelectList

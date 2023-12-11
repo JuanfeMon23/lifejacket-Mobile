@@ -12,19 +12,22 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*"
+      "assets/*"
     ],
+    "android": {
+      "package": "com.lifejacket.lifejacketmobile",
+      "versionCode": 1
+    },
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dabf3b13-b178-419b-91bb-1d6ab7b4cbb3"
+      }
     }
   }
 }
