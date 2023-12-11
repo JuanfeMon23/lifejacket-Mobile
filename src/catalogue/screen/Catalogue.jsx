@@ -41,7 +41,7 @@ export  function Catalogue() {
       filteredVehicles.map((vehicles) => (
           <View key={vehicles.idVehicle} style={styles.card} >
               <View style={{
-                justifyContent : 'start',
+                alignSelf: 'center',
                 marginLeft: 20,
                 marginTop:10
               }}>
@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    alignSelf: 'center',
+    width :350
   },
   titles : {
     fontWeight : '800',
